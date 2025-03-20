@@ -69,3 +69,21 @@ class Ships:
         if coord[1:] not in [str(i) for i in range(1, 11)]:
             return False
         return True
+    
+    def take_damage(self, shot):
+        if shot in self.coordinates:
+            if shot not in self.hit:
+                self.hit.append(shot)
+                print('You hit a ship at {}'.format(shot))
+                if self.is_sunk():
+                    print('You sank a ship!')
+            else:
+                print('You already hit this coordinate before!')
+        else:
+            print('You missed at {}'.format(shot))
+            
+    def is_sunk(self):
+        for coord in self.coordinates:
+            if coord not in self.hit:
+                return False
+        return True
