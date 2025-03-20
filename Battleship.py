@@ -27,7 +27,9 @@ class Player:
         return shot
     
     def place_ships(self):
-        pass
+        print(f"{self.name}, place your ships:")
+        for ship in self.ships:
+            ship.place_ship()
     
     def validate_shot(self, shot):
         if len(shot) < 2 or len(shot) > 3:
@@ -87,3 +89,42 @@ class Ships:
             if coord not in self.hit:
                 return False
         return True
+
+class Game:
+    def __init__(self, player1, player2):
+        self.player1 = player1
+        self.player2 = player2
+        self.player1.ships = [Ships(2), Ships(3), Ships(3), Ships(4), Ships(5)]
+        self.player2.ships = [Ships(2), Ships(3), Ships(3), Ships(4), Ships(5)]
+        self.current_player = player1
+        self.other_player = player2
+    
+    def place_ships(self):
+            self.player1.place_ships()
+            self.player2.place_ships()
+    
+    def play(self):
+        self.place_ships()
+
+        while True:
+            shot = self.current_player.shot()
+
+            hit = False
+
+            for ship in self.other_player.ships:
+                if shot in ship.coordinates:
+                    ship.take_damage(shot)
+                    hit = True
+                    break
+                
+            if not hit:
+                print('You missed at {}'.format(shot))
+            
+            if all(ship.is_sunk() for ship in self.other_player.ships):
+                print('{} won!'.format(self.current_player.name))
+                break
+
+            self.switch_turn()
+    
+    def switch_turn(self):
+        self.current_player, self.other_player = self.other_player, self.current_player
