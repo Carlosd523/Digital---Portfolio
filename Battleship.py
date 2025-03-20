@@ -1,10 +1,9 @@
 print("Hello, welcome to Battleship")
-name_player = input('Please write your name: ')
-print("Hello {name}, now we're gonna start playing as 'Player1'".format(name = name_player))
 class Player:
     def __init__(self, name):
         self.name = name
         self.shots = []
+        self.ships = []
 
     def shot(self):
         shot = input('Please write the coordinate of your shot:')
@@ -128,3 +127,10 @@ class Game:
     
     def switch_turn(self):
         self.current_player, self.other_player = self.other_player, self.current_player
+
+if __name__ == "__main__":
+    player1 = Player("Player 1")
+    player2 = Player("Player 2")
+    
+    game = Game(player1, player2)
+    game.play()
